@@ -17,12 +17,12 @@ conda create --name $SUBENV --clone srbench
 if [ -e environment.yml ] ; then 
     echo "Installing conda dependencies"
     echo "........................................"
-    mamba env update -n $SUBENV -f environment.yml
+    conda env update -n $SUBENV -f environment.yml
 fi
 if [ -e requirements.txt ] ; then 
     echo "Installing pip dependencies"
     echo "........................................"
-    mamba run -n $SUBENV pip install -r requirements.txt
+    conda run -n $SUBENV pip install -r requirements.txt
 fi
 
 eval "$(conda shell.bash hook)"
@@ -64,3 +64,7 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # cd ..
 # rsync -avz --exclude=".git" submission/$SUBNAME official_competitors/
 # rm -rf submission/$SUBNAME
+
+# Run experiments
+# cd experiments
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 1 -results ../results_blackbox -time_limit 1:00 --local
