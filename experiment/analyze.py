@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     if args.LEARNERS == None:
         prefix = 'methods/tuned/' if args.TUNED else 'methods/'
-        learners = [ml.split('/')[-1][:-3] for ml in glob(prefix+'*.py') 
+        learners = [ml.split('/')[-2] for ml in glob(prefix+'**/*.py',recursive = True) 
                 if not ml.split('/')[-1].startswith('_')]
         if args.TUNED:
             learners = ['tuned.'+ml for ml in learners]
