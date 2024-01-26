@@ -221,6 +221,15 @@ def evaluate_model(
     # simplicity
     results['simplicity'] = simplicity(results['symbolic_model'], feature_names)
 
+    # model size for feat
+    if 'feat' in est_name:
+        def get_complexity(est):
+            complexity = est.get_n_nodes() + 2*est.get_n_params() + 2*est.get_dim()
+            return complexity
+
+        results['model_size'] = get_complexity(est)
+
+
     ##################################################
     # write to file
     ##################################################
