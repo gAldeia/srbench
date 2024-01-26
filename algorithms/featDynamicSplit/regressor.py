@@ -13,9 +13,11 @@ est = FeatRegressor(
                     max_depth=6,
                     verbosity=2,
                     sel='split_lexicase',
-                    surv='offspring',
+                    surv='nsga2',
                     objectives=["fitness","complexity"],
-                    batch_size=100,
+                    batch_size=200,
+                    backprop=True,
+                    iters=10,
                     functions=['+','-','*','/','^2','^3','sqrt','sin','cos','exp','log'],
                     otype='f'
                    )
