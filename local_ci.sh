@@ -65,6 +65,13 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # rsync -avz --exclude=".git" submission/$SUBNAME official_competitors/
 # rm -rf submission/$SUBNAME
 
+# install environment
+# bash local_ci.sh <name of model>
+
 # Run experiments
 # cd experiments
-# python analyze.py ../datasets/pmlb/datasets/ -n_trials 1 -results ../results_blackbox -time_limit 1:00 --local
+# conda activate environment?
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 30 -results ../results_blackbox -time_limit 00:01:00 --local
+
+# conda activate srbench-feat (it can be any feat, as long as installed from my branch)
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 --slurm -q 'bch-compute'
