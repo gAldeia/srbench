@@ -242,12 +242,9 @@ if __name__ == '__main__':
 #SBATCH -N 1 
 #SBATCH -n {N_CORES} 
 #SBATCH -J {JOB_NAME} 
-#SBATCH -A {A} -p {QUEUE} 
+#SBATCH -p {QUEUE} 
 #SBATCH --ntasks-per-node=1 --time={TIME}:00 
 #SBATCH --mem-per-cpu={M} 
-
-conda info 
-source plg_modules.sh
 
 {cmd}
 """.format(
@@ -255,11 +252,10 @@ source plg_modules.sh
            ERR_FILE=error_file,
            JOB_NAME=job_name,
            QUEUE=args.QUEUE,
-           A=args.A,
            N_CORES=args.N_JOBS,
            M=args.M,
            cmd=run_cmd,
-           TIME=args.TIME
+           TIME=args.TIME,
           )
                     with open('tmp_script','w') as f:
                         f.write(batch_script)

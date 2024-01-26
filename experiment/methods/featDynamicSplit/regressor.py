@@ -1,6 +1,3 @@
-# https://cavalab.org/srbench/contributing/
-# https://cavalab.org/srbench/user-guide/#reproducing-the-experiment
-
 # This example submission shows the submission of FEAT (cavalab.org/feat). 
 from feat import FeatRegressor
 
@@ -15,7 +12,7 @@ est = FeatRegressor(
                     max_time=8*60*60,  # 8 hrs
                     max_depth=6,
                     verbosity=2,
-                    sel='static_split_lexicase',
+                    sel='split_lexicase',
                     surv='nsga2',
                     objectives=["fitness","complexity"],
                     batch_size=200,
