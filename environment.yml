@@ -17,3 +17,6 @@ dependencies:
   - pip:
     - pmlb==1.0.1.post3
     - pytest-order
+    - tqdm
+    - pyarrow
+    - orange3==3.30 # version that includes Critical difference plots

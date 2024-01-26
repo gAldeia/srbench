@@ -1,6 +1,7 @@
 *.lock.yml
 .idea
 results_*/
+paper/
 *.swp
 tmp_*
 # Byte-compiled / optimized / DLL files
