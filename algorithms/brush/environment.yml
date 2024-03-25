@@ -1,0 +1,29 @@
+channels:
+    - conda-forge
+dependencies:
+    - python #=3.8.2
+    - cmake #=3.18.*
+    - eigen #=3.4.*
+    - fmt
+    - gcc >= 12.0
+    - gxx >= 12.0
+    - ninja
+    - ceres-solver
+    - pybind11 #=2.6.2
+    - pytest #=6.2.4
+    - pydot
+    - scikit-learn
+    - pandas
+    # these are not required for install
+    - joblib
+    - taskflow
+    - pip
+    - nlohmann_json
+    - pybind11_json
+    - sphinx
+    - pip:
+      - graphviz
+      - deap
+      - networkx
+      - scipy
+      - git+https://github.com/cavalab/brush.git@mutation_trace
