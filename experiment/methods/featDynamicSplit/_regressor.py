@@ -106,7 +106,7 @@ def my_pre_train_fn(est, X, y):
     """In this example we adjust FEAT generations based on the size of X 
        versus relative to FEAT's batch size setting. 
     """
-    if est.batch_size < len(X):
+    if est.batch_size < len(X) and est.batch_size > 0:
         est.gens = int(est.gens*len(X)/est.batch_size)
     print('FEAT gens adjusted to',est.gens)
     # adjust max dim
