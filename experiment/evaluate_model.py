@@ -35,6 +35,30 @@ def set_env_vars(n_jobs):
     os.environ['OPENBLAS_NUM_THREADS'] = n_jobs 
     os.environ['MKL_NUM_THREADS'] = n_jobs
 
+
+def _save_brush_evolution(estimator, name, dataset, random_state, rdir, repeat):
+    """Save a file with evolution info. used in convergence analysis"""
+    logbook = pd.DataFrame(columns=['gen', 'evals', 'best_size'] + 
+                            [f"{stat} {partition} {objective}"
+                             for stat in ['avg', 'med', 'std', 'min', 'max']
+                             for partition in ['train', 'val']
+                             for objective in estimator.objectives])
+    
+    for item in estimator.logbook_:
+        logbook.loc[item['gen']] = (
+            item['gen'], item['evals'], item['best_size'],
+            *item['avg'], *item['med'], *item['std'], *item['min'], *item['max']
+        )
+
+    logbook_filename = rdir + '_'.join([dataset, 
+                                        name, 
+                                        str(repeat), 
+                                        str(random_state),
+                                        "evolution"]) + '.csv'
+        
+    pd.DataFrame.from_dict({col: logbook[col] for col in logbook.columns}
+    ).to_csv(logbook_filename, index=False)
+
 def evaluate_model(
     dataset, 
     results_path,
@@ -166,6 +190,10 @@ def evaluate_model(
     signal.alarm(MAXTIME) # maximum time, defined above
     try:
         est.fit(X_train_scaled, y_train_scaled)
+        
+        if "brush" in est_name: # saving log
+            dataset_name = dataset.split('/')[-1].split('.')[0]
+            _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
     except TimeOutException:
         print('WARNING: fitting timed out')
 
@@ -198,6 +226,7 @@ def evaluate_model(
         results['symbolic_model'] = model(est, X_df)
     else:
         results['symbolic_model'] = model(est)
+        
     print('symbolic model:',results['symbolic_model'])
     ##################################################
     # scores
@@ -228,7 +257,11 @@ def evaluate_model(
             return complexity
 
         results['model_size'] = get_complexity(est)
+    if "brush" in est_name:
+        results['model_size'] = est.best_estimator_.size()
 
+    results['target_noise'] = args.Y_NOISE
+    results['feature_noise'] = args.X_NOISE
 
     ##################################################
     # write to file
@@ -244,7 +277,11 @@ def evaluate_model(
         results_path,
         '_'.join([dataset_name, est_name, str(random_state)])
     )
-
+    if args.Y_NOISE > 0:
+        save_file += '_target-noise'+str(args.Y_NOISE)
+    if args.X_NOISE > 0:
+        save_file += '_feature-noise'+str(args.X_NOISE)
+        
     print('save_file:',save_file)
 
     with open(save_file + '.json', 'w') as out:

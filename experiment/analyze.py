@@ -58,6 +58,8 @@ if __name__ == '__main__':
                         type=str,help='Python script to run')
     parser.add_argument('-m',action='store',dest='M',default=16384,type=int,
             help='LSF memory request and limit (MB)')
+    parser.add_argument('-max_samples',action='store',  type=int, default=0,
+                        help='number of training samples')
     parser.add_argument('-starting_seed',action='store',dest='START_SEED',
                         default=0,type=int, help='seed position to start with')
     parser.add_argument('-test',action='store_true', dest='TEST', 
@@ -80,7 +82,7 @@ if __name__ == '__main__':
 
     if args.LEARNERS == None:
         prefix = 'methods/tuned/' if args.TUNED else 'methods/'
-        learners = [ml.split('/')[-2] for ml in glob(prefix+'**/*.py',recursive = True) 
+        learners = [ml.split('/')[-2] for ml in glob(prefix+'/*/*.py',recursive = True) 
                 if not ml.split('/')[-1].startswith('_')]
         if args.TUNED:
             learners = ['tuned.'+ml for ml in learners]
@@ -176,6 +178,7 @@ if __name__ == '__main__':
                                     '{DATASET}'
                                     ' -ml {ML}'
                                     ' -results_path {RDIR}'
+                                    ' -max_samples {MSAMPLE}'
                                     ' -seed {RS} '
                                     ' -target_noise {TN} '
                                     ' -feature_noise {FN} '
@@ -184,6 +187,7 @@ if __name__ == '__main__':
                                         ML=ml,
                                         DATASET=dataset,
                                         RDIR=results_path,
+                                        MSAMPLE=args.max_samples,
                                         RS=random_state,
                                         TN=args.Y_NOISE,
                                         FN=args.X_NOISE,
@@ -209,6 +213,9 @@ if __name__ == '__main__':
         print('skipped',len(jobs_wout_results),'jobs without results. Override with --noskips.')
         print('skipped',len(queued_jobs),'queued jobs. Override with --noskips.')
     print('submitting',len(all_commands),'jobs...')
+
+    input("Press Enter to continue")
+    
     if args.LOCAL:
         # run locally  
         Parallel(n_jobs=args.N_JOBS)(delayed(os.system)(run_cmd)
