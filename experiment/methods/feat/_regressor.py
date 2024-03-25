@@ -1,6 +1,3 @@
-# https://cavalab.org/srbench/contributing/
-# https://cavalab.org/srbench/user-guide/#reproducing-the-experiment
-
 # This example submission shows the submission of FEAT (cavalab.org/feat). 
 from feat import FeatRegressor
 
@@ -15,12 +12,7 @@ est = FeatRegressor(
                     max_time=8*60*60,  # 8 hrs
                     max_depth=6,
                     verbosity=2,
-                    sel='static_split_lexicase',
-                    surv='nsga2',
-                    objectives=["fitness","complexity"],
                     batch_size=200,
-                    backprop=True,
-                    iters=10,
                     functions=['+','-','*','/','^2','^3','sqrt','sin','cos','exp','log'],
                     otype='f'
                    )
@@ -109,7 +101,7 @@ def my_pre_train_fn(est, X, y):
     """In this example we adjust FEAT generations based on the size of X 
        versus relative to FEAT's batch size setting. 
     """
-    if est.batch_size < len(X):
+    if est.batch_size < len(X) and est.batch_size > 0:
         est.gens = int(est.gens*len(X)/est.batch_size)
     print('FEAT gens adjusted to',est.gens)
     # adjust max dim
