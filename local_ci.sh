@@ -65,13 +65,64 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # rsync -avz --exclude=".git" submission/$SUBNAME official_competitors/
 # rm -rf submission/$SUBNAME
 
-# install environment
+# install environment (you need to create  one for each algorithm youre gonna run)
 # bash local_ci.sh <name of model>
 
-# Run experiments
+# Run experiments --------------------------------------------------------------
+# https://cavalab.org/srbench/user-guide/#reproducing-the-experiment
+
 # cd experiments
 # conda activate environment?
+
+# locally
 # python analyze.py ../datasets/pmlb/datasets/ -n_trials 30 -results ../results_blackbox -time_limit 00:01:00 --local
 
+# slurm
 # conda activate srbench-feat (it can be any feat, as long as installed from my branch)
 # python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 --slurm -q 'bch-compute'
+
+
+
+# ground truth experiments (With brush, I need to remember to remove some operators)
+# submit the ground-truth dataset experiment. 
+
+for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
+    for TN in 0 0.001 0.01 0.1; do
+        python analyze.py \
+            $data"*" \
+            -results ../results_sym_data \
+            -target_noise $TN \
+            -sym_data \
+            -n_trials 10 \
+            -m 16384 \
+            -max_samples 100000 \
+            -time_limit 9:00 \
+            -job_limit 1000 \
+            --slurm \
+            -q 'bch-compute'
+        if [ $? -gt 0 ] ; then
+            break
+        fi
+    done
+done
+
+# assess the ground-truth models that were produced using sympy
+for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
+    for TN in 0 0.001 0.01 0.1; do
+        python analyze.py \
+            -script assess_symbolic_model \
+            $data"*" \
+            -results ../results_sym_data \
+            -target_noise $TN \
+            -sym_data \
+            -n_trials 10 \
+            -m 8192 \
+            -time_limit 1:00 \
+            -job_limit 1000 \
+            --slurm \
+            -q 'bch-compute'
+        if [ $? -gt 0 ] ; then
+            break
+        fi
+    done
+done
