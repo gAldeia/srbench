@@ -1,0 +1,9 @@
+authors: # the participants
+  - Guilherme Aldeia, Joseph Romano, William La Cava
+email: guilherme.aldeia@ufabc.edu.br
+name: brush # name of the submission /method
+description: | # anything you'd like here to describe the method.
+  An interpretable machine learning library
+
+url: https://github.com/cavalab/brush # a link to the project
+
