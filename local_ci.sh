@@ -79,9 +79,8 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 
 # slurm
 # conda activate srbench-feat (it can be any feat, as long as installed from my branch)
-# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 --slurm -q 'bch-compute'
-
-
+python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+                                             -max_samples 10000 --slurm -q 'bch-compute'
 
 # ground truth experiments (With brush, I need to remember to remove some operators)
 # submit the ground-truth dataset experiment. 
@@ -94,8 +93,8 @@ for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/fey
             -target_noise $TN \
             -sym_data \
             -n_trials 10 \
-            -m 16384 \
-            -max_samples 100000 \
+            -m 8192 \
+            -max_samples 10000 \
             -time_limit 9:00 \
             -job_limit 1000 \
             --slurm \
