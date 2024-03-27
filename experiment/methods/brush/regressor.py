@@ -46,15 +46,10 @@ kwargs = {
         
         # synthetic data experiments -------------------------------------------
         "Add", "Sub", "Mul", "Div", 
-        "Cos", "Sin", 
-        "Acos", "Asin",
-        # "Cosh", "Sinh",
-        "Exp", "Log", "Sqrt", "Square", "Pow",
-        # "Tan",  # "Atan",  # "Tanh",
-        # "Logabs", "Log1p",
+        "Cos", "Sin", "Tanh",
+        "Exp", "Log", "Sqrt", "Pow",
+        "Constant", "Terminal",
 
-        # terminals
-        "Constant", "Terminal", # "MeanLabel",
     ]
 }
 
