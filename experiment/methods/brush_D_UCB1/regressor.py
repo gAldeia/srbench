@@ -24,43 +24,38 @@ kwargs = {
     'objectives'      : ['error', 'size'],
     'functions'       : [
         # Black box experiments ------------------------------------------------
-        # # arithmetic
-        # "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
-        # "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
-        # "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
+        # arithmetic
+        "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
+        "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
+        "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
 
-        # # logic
-        # "And", "Or", "Not", "Xor",
+        # logic
+        "And", "Or", "Not", "Xor",
 
-        # # decision
-        # "Equals", "LessThan", "GreaterThan", "Leq", "Geq",
+        # decision
+        "Equals", "LessThan", "GreaterThan", "Leq", "Geq",
 
-        # # reductions
-        # # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
+        # reductions
+        # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
 
-        # # transformation
-        # "Softmax",
+        # transformation
+        "Softmax",
 
-        # # timing masks
-        # "Before", "After", "During",
+        # timing masks
+        "Before", "After", "During",
         
-        # # split
-        # "SplitBest", "SplitOn",
-
-        # # terminals
-        # "MeanLabel", "Constant", "Terminal",
-        
-        # synthetic data experiments -------------------------------------------
-        "Add", "Sub", "Mul", "Div", 
-        "Cos", "Sin", 
-        "Acos", "Asin",
-        # "Cosh", "Sinh",
-        "Exp", "Log", "Sqrt", "Square", "Pow",
-        # "Tan",  # "Atan",  # "Tanh",
-        # "Logabs", "Log1p",
+        # split
+        "SplitBest", "SplitOn",
 
         # terminals
-        "Constant", "Terminal", # "MeanLabel",
+        "MeanLabel", "Constant", "Terminal",
+
+        # synthetic data experiments -------------------------------------------
+        # "Add", "Sub", "Mul", "Div", 
+        # "Cos", "Sin", "Tanh",
+        # "Exp", "Log", "Sqrt", "Pow",
+        # "Constant", "Terminal",
+
     ]
 }
 

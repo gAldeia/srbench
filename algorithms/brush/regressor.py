@@ -30,7 +30,7 @@ kwargs = {
         # # decision
         # "Equals", "LessThan", "GreaterThan", "Leq", "Geq",
 
-        # # reductions
+        # # reductions (sum and prod take up to 4 arguments)
         # # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
 
         # # transformation
