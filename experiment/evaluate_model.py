@@ -119,7 +119,9 @@ def evaluate_model(
         print('subsampling training data from',len(X_train),
               'to',max_train_samples)
         sample_idx = np.random.choice(np.arange(len(X_train)),
-                                      size=max_train_samples)
+                                      size=max_train_samples,
+                                      replace=False,
+                                      random_state=random_state)
         y_train = y_train[sample_idx]
         if isinstance(X_train, pd.DataFrame):
             X_train = X_train.loc[sample_idx]
@@ -191,7 +193,7 @@ def evaluate_model(
     try:
         est.fit(X_train_scaled, y_train_scaled)
         
-        if "brush" in est_name: # saving log
+        if "brush" in est_name and False: # saving log
             dataset_name = dataset.split('/')[-1].split('.')[0]
             _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
     except TimeOutException:
@@ -255,12 +257,12 @@ def evaluate_model(
         def get_complexity(est):
             complexity = est.get_n_nodes() + 2*est.get_n_params() + 2*est.get_dim()
             return complexity
-
         results['model_size'] = get_complexity(est)
+
     if "brush" in est_name:
         results['model_size'] = est.best_estimator_.size()
 
-    results['target_noise'] = args.Y_NOISE
+    results['target_noise']  = args.Y_NOISE
     results['feature_noise'] = args.X_NOISE
 
     ##################################################
@@ -324,8 +326,11 @@ if __name__ == '__main__':
     parser.add_argument('-feature_noise',action='store',dest='X_NOISE',
                         default=0.0, type=float, help='Gaussian noise to add'
                         'to the target')
-    parser.add_argument('-sym_data',action='store_true',  
-                       help='Use symbolic dataset settings')
+    
+    parser.add_argument('--sym_data', action='store_false', dest='SYM_DATA', default=False)
+    parser.add_argument('--scale_x', action='store_true', dest='SCALE_X', default=False) 
+    parser.add_argument('--scale_y', action='store_true', dest='SCALE_Y', default=False)
+
     parser.add_argument('-skip_tuning',action='store_true', dest='SKIP_TUNE', 
                         default=False, help='Dont tune the estimator')
 
@@ -348,6 +353,10 @@ if __name__ == '__main__':
 
     if args.max_samples != 0:
         eval_kwargs['max_train_samples'] = args.max_samples
+
+    eval_kwargs['sym_data'] = args.SYM_DATA
+    eval_kwargs['scale_x'] = args.SCALE_X
+    eval_kwargs['scale_y'] = args.SCALE_Y
 
     evaluate_model(args.INPUT_FILE,
                    args.RDIR,
