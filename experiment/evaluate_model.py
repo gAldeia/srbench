@@ -120,11 +120,10 @@ def evaluate_model(
               'to',max_train_samples)
         sample_idx = np.random.choice(np.arange(len(X_train)),
                                       size=max_train_samples,
-                                      replace=False,
-                                      random_state=random_state)
+                                      replace=False)
         y_train = y_train[sample_idx]
         if isinstance(X_train, pd.DataFrame):
-            X_train = X_train.loc[sample_idx]
+            X_train = X_train.iloc[sample_idx]
         else:
             X_train = X_train[sample_idx]
 
@@ -193,9 +192,14 @@ def evaluate_model(
     try:
         est.fit(X_train_scaled, y_train_scaled)
         
-        if "brush" in est_name and False: # saving log
+        if "brush" in est_name and true_model: # saving log
             dataset_name = dataset.split('/')[-1].split('.')[0]
             _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
+
+            # Printing archive
+            for ind_idx, ind in enumerate(est.archive_):
+                print(ind_idx, ind.prg.get_model(), ind.fitness)
+    
     except TimeOutException:
         print('WARNING: fitting timed out')
 
