@@ -3,10 +3,10 @@ import re
 
 kwargs = {
     'verbosity'       : False,
-    'pop_size'        : 100, 
-    'max_gen'         : 1_000,
-    'max_depth'       : 8,  # 8
-    'max_size'        : 2**8, # 75
+    'pop_size'        : 1_000, 
+    'max_gen'         : 100,
+    'max_depth'       : 6,  # 8
+    'max_size'        : 2**6, # 75
     'initialization'  : 'uniform',
     'validation_size' : 0.33,
     'cx_prob'         : 1/7,
@@ -67,7 +67,7 @@ func_dict = {
     'Pow': '**',
 }
 
-func_arity = {
+func_arity = { # remember to add here the functions used in the experiments
     # These can have multiple arguments
     'Mul': 2,
     'Sub': 2,
@@ -76,8 +76,9 @@ func_arity = {
 
     'Pow': 2,
     
-    'Sin' : 1,
-    'Cos' : 1,
+    'Sin'  : 1,
+    'Cos'  : 1,
+    'Tanh' : 1,
 
     'Asin' : 1,
     'Acos' : 1,
@@ -123,9 +124,10 @@ def pretify_expr(string, feature_names):
 
     return new_string
 
-
 def model(est, X=None):
     model_str = est.best_estimator_.get_model()
+    
+    return model_str # raw string, without fixing infix notation
 
     feature_names = [f"x_{i}" for i in range(100)]
     if X is not None:
