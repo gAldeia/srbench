@@ -80,32 +80,46 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # slurm
 # conda activate srbench-feat (it can be any feat, as long as installed from my branch)
 python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
-                                             -max_samples 10000 --slurm -q 'bch-compute'
+                                             -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
+                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-# ground truth experiments (With brush, I need to remember to remove some operators)
-# submit the ground-truth dataset experiment. 
+python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+                                             -ml "feat,featDynamicSplit,featStaticSplit" \
+                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
+
+python analyze.py ../datasets/pmlb/datasets/ -n_trials 1 -results ../results_blackbox -time_limit 48:00 \
+                                             -ml "e2et" \
+                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
+
+# # ground truth experiments (With brush, I need to remember to remove some operators)
+# # submit the ground-truth dataset experiment. 
+
+-ml "e2et" \
+-ml "feat,featDynamicSplit,featStaticSplit" \
+-ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
 
 for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
     for TN in 0 0.001 0.01 0.1; do
         python analyze.py \
             $data"*" \
             -results ../results_sym_data \
+            -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
             -target_noise $TN \
-            -sym_data \
             -n_trials 10 \
             -m 8192 \
             -max_samples 10000 \
             -time_limit 9:00 \
             -job_limit 1000 \
-            --slurm \
-            -q 'bch-compute'
+            -q 'bch-compute' \
+            --sym_data \
+            --slurm
         if [ $? -gt 0 ] ; then
             break
         fi
     done
 done
 
-# assess the ground-truth models that were produced using sympy
+# # assess the ground-truth models that were produced using sympy
 for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
     for TN in 0 0.001 0.01 0.1; do
         python analyze.py \
@@ -113,15 +127,22 @@ for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/fey
             $data"*" \
             -results ../results_sym_data \
             -target_noise $TN \
-            -sym_data \
             -n_trials 10 \
             -m 8192 \
             -time_limit 1:00 \
             -job_limit 1000 \
-            --slurm \
-            -q 'bch-compute'
+            -q 'bch-compute' \
+            --sym_data \
+            --slurm
         if [ $? -gt 0 ] ; then
             break
         fi
     done
 done
+
+# Cleaning up
+find ./results_blackbox/ -name "*.err" -type f -delete
+find ./results_blackbox/ -name "*.out" -type f -delete
+
+find ./results_sym_data/ -name "*.err" -type f -delete
+find ./results_sym_data/ -name "*.out" -type f -delete
