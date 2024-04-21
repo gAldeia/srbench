@@ -108,9 +108,9 @@ def evaluate_model(
                                                     random_state=random_state)
 
     # time limits
-    MAXTIME = 3600
+    MAXTIME = 7_200
     if len(y_train) > 1000:
-        MAXTIME = 36000
+        MAXTIME = 72_000
 
     print('max time:',MAXTIME)
 
@@ -192,7 +192,7 @@ def evaluate_model(
     try:
         est.fit(X_train_scaled, y_train_scaled)
         
-        if "brush" in est_name and true_model: # saving log
+        if "brush" in est_name and True: # saving log
             dataset_name = dataset.split('/')[-1].split('.')[0]
             _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
 

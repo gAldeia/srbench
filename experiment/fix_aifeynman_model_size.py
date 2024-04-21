@@ -102,8 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('-feature_noise',action='store',dest='X_NOISE',
                         default=0.0, type=float, help='Gaussian noise to add'
                         'to the target')
-    parser.add_argument('-sym_data',action='store_true', dest='SYM_DATA', 
-                       help='Use symbolic dataset settings')
+    parser.add_argument('--sym_data', action='store_false', dest='SYM_DATA', default=False)
 
     args = parser.parse_args()
 

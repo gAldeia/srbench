@@ -34,8 +34,6 @@ if __name__ == '__main__':
             help='Skip tuning step')
     parser.add_argument('-A', action='store', dest='A', default='plgsrbench', 
             help='SLURM account')
-    parser.add_argument('-sym_data',action='store_true', dest='SYM_DATA', default=False, 
-            help='Specify a symbolic dataset')
     parser.add_argument('-tuned',action='store_true', dest='TUNED', default=False, 
             help='Run tuned version of estimators. Only applies when ml=None')
     parser.add_argument('-n_jobs',action='store',dest='N_JOBS',default=1,type=int,
@@ -73,6 +71,10 @@ if __name__ == '__main__':
     parser.add_argument('-job_limit',action='store',dest='JOB_LIMIT',
                         default=1000, type=int, 
                         help='Limit number of jobs submitted at once')
+
+    parser.add_argument('--sym_data', action='store_true', dest='SYM_DATA', default=False)
+    parser.add_argument('--scale_x', action='store_true', dest='SCALE_X', default=False) 
+    parser.add_argument('--scale_y', action='store_true', dest='SCALE_Y', default=False)
 
     args = parser.parse_args()
      
@@ -182,7 +184,10 @@ if __name__ == '__main__':
                                     ' -seed {RS} '
                                     ' -target_noise {TN} '
                                     ' -feature_noise {FN} '
-                                    '{TEST} {SYM_DATA} {SKIP_TUNE}'.format(
+                                    f' {"--scale_x" if args.SCALE_X else ""}'
+                                    f' {"--scale_y" if args.SCALE_Y else ""}'
+                                    f' {"--sym_data" if args.SYM_DATA else ""}'
+                                    ' {TEST} {SKIP_TUNE}'.format(
                                         SCRIPT=args.SCRIPT,
                                         ML=ml,
                                         DATASET=dataset,
@@ -193,8 +198,6 @@ if __name__ == '__main__':
                                         FN=args.X_NOISE,
                                         TEST=('-test' if args.TEST
                                                 else ''),
-                                        SYM_DATA=('-sym_data' if args.SYM_DATA
-                                                   else ''),
                                         SKIP_TUNE=('-skip_tuning' if
                                                    args.SKIP_TUNE else '')
                                         )
@@ -203,7 +206,10 @@ if __name__ == '__main__':
                                  'dataset':dataname,
                                  'seed':str(random_state),
                                  'results_path':results_path,
-                                 'target_noise':args.Y_NOISE
+                                 'target_noise':args.Y_NOISE,
+                                 'scale_x':  args.SCALE_X,
+                                 'scale_y':  args.SCALE_Y,
+                                 'sym_data': args.SYM_DATA,
                                  })
     if len(all_commands) > args.JOB_LIMIT:
         print('shaving jobs down to job limit ({})'.format(args.JOB_LIMIT))
@@ -230,6 +236,9 @@ if __name__ == '__main__':
                                  job_info[i]['dataset'],
                                  job_info[i]['ml'],
                                  job_info[i]['seed'],
+                                #  str(job_info[i]['scale_x']),
+                                #  str(job_info[i]['scale_y']),
+                                #  str(job_info[i]['sym_data']),
                                  args.SCRIPT
                                 ])
             if args.Y_NOISE>0:
@@ -242,7 +251,7 @@ if __name__ == '__main__':
             error_file = out_file[:-4] + '.err'
             
             if args.SLURM:
-                    batch_script = \
+                batch_script = \
 """#!/usr/bin/bash 
 #SBATCH -o {OUT_FILE} 
 #SBATCH --error={ERR_FILE} 
@@ -264,14 +273,14 @@ if __name__ == '__main__':
            cmd=run_cmd,
            TIME=args.TIME,
           )
-                    with open('tmp_script','w') as f:
-                        f.write(batch_script)
+                with open('tmp_script','w') as f:
+                    f.write(batch_script)
 
-                    # print(batch_script)
-                    print(job_name)
-                    sbatch_response = subprocess.check_output(['sbatch tmp_script'],
-                                                              shell=True).decode()     # submit jobs 
-                    print(sbatch_response)
+                # print(batch_script)
+                print(job_name)
+                sbatch_response = subprocess.check_output(['sbatch tmp_script'],
+                                                            shell=True).decode()     # submit jobs 
+                print(sbatch_response)
 
             else: # LPC
                 # activate srbench env, load modules

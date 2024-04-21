@@ -138,10 +138,12 @@ if __name__ == '__main__':
     parser.add_argument('-target_noise',action='store',dest='Y_NOISE',
                         default=0.0, type=float, help='Gaussian noise to add'
                         'to the target')
+    parser.add_argument('-max_samples',action='store',  type=int, default=0,
+                        help='number of training samples')
     parser.add_argument('-feature_noise',action='store',dest='X_NOISE',
                         default=0.0, type=float, help='Gaussian noise to add'
                         'to the target')
-    parser.add_argument('-sym_data',action='store_true', dest='SYM_DATA', 
+    parser.add_argument('--sym_data',action='store_true', dest='SYM_DATA', 
                        help='Use symbolic dataset settings')
     parser.add_argument('-json_file',action='store', dest='JSON_FILE', type=str,
                        default='',help='JSON results file')
