@@ -12,7 +12,7 @@ algorithms/dso/deep-symbolic-optimization-3.0.0
 algorithms/tpsr/TPSR/nesymres/weights/10M.ckpt
 algorithms/tpsr/TPSR/nesymres/weights/100M.ckpt
 algorithms/tpsr/TPSR/symbolicregression/weights/model1.pt
-experiment/methods/e2et/model1.pt
+# experiment/methods/e2et/model1.pt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
