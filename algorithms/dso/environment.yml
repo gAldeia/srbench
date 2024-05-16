@@ -1,0 +1,19 @@
+# Copyright (c) Meta Platforms Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+
+# create environment, then, from algorithms/dso run
+# pip install -e dso/
+
+name: srbench-dso
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.6
+  - setuptools
+  - pip
+  pip:
+  - pip install pyparsing==2.4.7 # so tensorflow does not break

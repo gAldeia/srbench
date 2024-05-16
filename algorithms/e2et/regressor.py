@@ -41,7 +41,8 @@ except Exception as e:
 est = SymbolicTransformerRegressor(
     model=model,
     max_input_points=200,
-    n_trees_to_refine=100,
+    n_trees_to_refine=10,
+    max_number_bags=10,
     rescale=True
 )
 

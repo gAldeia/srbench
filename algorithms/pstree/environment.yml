@@ -1,0 +1,11 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - setuptools
+  - pip
+  - pip:
+    - numpy
+    - scikit-learn
+    - git+https://github.com/hengzhe-zhang/PS-Tree

@@ -1,0 +1,21 @@
+authors:
+  - Mikel Landajuela
+  - Chak Shing Lee
+  - Jiachen Yang
+  - Ruben Glatt
+  - Claudio P Santiago
+  - Ignacio Aravena
+  - Terrell Mundhenk
+  - Garrett Mulcahy
+  - Brenden K Petersen
+email: landajuelala1@llnl.gov
+name: dso
+description: | 
+  A Unified Framework for Deep Symbolic Regression
+  Mikel Landajuela, Chak Shing Lee, Jiachen Yang, Ruben Glatt, Claudio P Santiago, Ignacio Aravena, Terrell Mundhenk, Garrett Mulcahy, Brenden K Petersen
+
+  Paper: https://proceedings.neurips.cc/paper_files/paper/2022/file/dbca58f35bddc6e4003b2dd80e42f838-Paper-Conference.pdf
+  Download pre-trained model: not available
+
+url: https://github.com/dso-org/deep-symbolic-optimization
+
