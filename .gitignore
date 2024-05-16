@@ -6,6 +6,13 @@ paper/
 *.swp
 tmp_*
 datasets
+
+algorithms/e2et/model1.pt
+algorithms/tpsr/TPSR/nesymres/weights/10M.ckpt
+algorithms/tpsr/TPSR/nesymres/weights/100M.ckpt
+algorithms/tpsr/TPSR/symbolicregression/weights/model1.pt
+experiment/methods/e2et/model1.pt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
