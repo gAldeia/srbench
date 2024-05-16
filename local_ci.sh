@@ -65,6 +65,7 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # rsync -avz --exclude=".git" submission/$SUBNAME official_competitors/
 # rm -rf submission/$SUBNAME
 
+# (from root folder)
 # install environment (you need to create  one for each algorithm youre gonna run)
 # bash local_ci.sh <name of model>
 
@@ -78,71 +79,90 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 # python analyze.py ../datasets/pmlb/datasets/ -n_trials 30 -results ../results_blackbox -time_limit 00:01:00 --local
 
 # slurm
-# conda activate srbench-feat (it can be any feat, as long as installed from my branch)
-python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
-                                             -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
-                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
-                                             -ml "feat,featDynamicSplit,featStaticSplit" \
-                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
+# -ml "dso" \   # srbench-dso
+# -ml "e2et" \  # srbench-e2ett
+# -ml "tpsr,nesymres10M,nesymres100M" \  # srbench-tpsr. Requires 10GB and max_samples 1_000
+# -ml "feat,featDynamicSplit,featStaticSplit" \  # srbench-featDynamicSplit
+# -ml "brush,brush_wo_split,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \  # srbench-brush
 
-python analyze.py ../datasets/pmlb/datasets/ -n_trials 1 -results ../results_blackbox -time_limit 48:00 \
-                                             -ml "e2et" \
-                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
+# # conda activate srbench-feat (or other environment)
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+#                                              -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
+#                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-# # ground truth experiments (With brush, I need to remember to remove some operators)
-# # submit the ground-truth dataset experiment. 
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+#                                              -ml "feat,featDynamicSplit,featStaticSplit" \
+#                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
--ml "e2et" \
--ml "feat,featDynamicSplit,featStaticSplit" \
--ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+#                                              -ml "e2et" \
+#                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
-    for TN in 0 0.001 0.01 0.1; do
-        python analyze.py \
-            $data"*" \
-            -results ../results_sym_data \
-            -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1" \
-            -target_noise $TN \
-            -n_trials 10 \
-            -m 8192 \
-            -max_samples 10000 \
-            -time_limit 9:00 \
-            -job_limit 1000 \
-            -q 'bch-compute' \
-            --sym_data \
-            --slurm
-        if [ $? -gt 0 ] ; then
-            break
-        fi
-    done
-done
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+#                                              -ml "tpsr" -m 12000 \
+#                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-# # assess the ground-truth models that were produced using sympy
-for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
-    for TN in 0 0.001 0.01 0.1; do
-        python analyze.py \
-            -script assess_symbolic_model \
-            $data"*" \
-            -results ../results_sym_data \
-            -target_noise $TN \
-            -n_trials 10 \
-            -m 8192 \
-            -time_limit 1:00 \
-            -job_limit 1000 \
-            -q 'bch-compute' \
-            --sym_data \
-            --slurm
-        if [ $? -gt 0 ] ; then
-            break
-        fi
-    done
-done
+# python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
+#                                              -ml "dso" \
+#                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
-# Cleaning up
-find ./results_blackbox/ -name "*.err" -type f -delete
-find ./results_blackbox/ -name "*.out" -type f -delete
+# # # ground truth experiments (With brush, I need to remember to remove some operators)
+# # # submit the ground-truth dataset experiment. 
 
-find ./results_sym_data/ -name "*.err" -type f -delete
-find ./results_sym_data/ -name "*.out" -type f -delete
+# for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
+#     for TN in 0 0.001 0.01 0.1; do
+#         python analyze.py \
+#             $data"*" \
+#             -results ../results_sym_data \
+#             -ml "tpsr" \
+#             -target_noise $TN \
+#             -n_trials 10 \
+#             -m 12000 \
+#             -max_samples 10000 \
+#             -time_limit 9:00 \
+#             -job_limit 1000 \
+#             -q 'bch-compute' \
+#             --sym_data \
+#             --slurm
+#         if [ $? -gt 0 ] ; then
+#             break
+#         fi
+#     done
+# done
+
+# # # assess the ground-truth models that were produced using sympy
+# for data in "../datasets/pmlb/datasets/strogatz_" "../datasets/pmlb/datasets/feynman_" ; do
+#     for TN in 0 0.001 0.01 0.1; do
+#         python analyze.py \
+#             -script assess_symbolic_model \
+#             $data"*" \
+#             -results ../results_sym_data \
+#             -target_noise $TN \
+#             -n_trials 10 \
+#             -m 8192 \
+#             -time_limit 1:00 \
+#             -job_limit 1000 \
+#             -q 'bch-compute' \
+#             --sym_data \
+#             --slurm
+#         if [ $? -gt 0 ] ; then
+#             break
+#         fi
+#     done
+# done
+
+# # Cleaning up log and debug
+# find ../results_blackbox/ -name "*.err" -type f -delete
+# find ../results_blackbox/ -name "*.out" -type f -delete
+# find ../results_blackbox/ -name "*_evolution.csv" -type f -delete
+
+# find ../results_sym_data/ -name "*.err" -type f -delete
+# find ../results_sym_data/ -name "*.out" -type f -delete
+# find ../results_sym_data/ -name "*_evolution.csv" -type f -delete
+
+# # cleaning up some specific algorithm (danger zone)
+# # find ../results_blackbox/ -name "*_tpsr_*.*" -type f -delete
+# # find ../results_blackbox/ -name "*_e2et_*.*" -type f -delete
+# # find ../results_blackbox/ -name "*_nesymres_*.*" -type f -delete
+# # find ../results_blackbox/ -name "*_dso_*.*" -type f -delete
