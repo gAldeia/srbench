@@ -3,7 +3,7 @@ from brush import BrushRegressor
 kwargs = {
     'verbosity'       : False,
     'pop_size'        : 1_000, 
-    'max_gen'         : 100,
+    'max_gen'         : 250,
     'max_depth'       : 6,  # 8
     'max_size'        : 64, # 75
     'initialization'  : 'uniform',

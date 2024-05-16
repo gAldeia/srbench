@@ -1,5 +1,15 @@
-from .brushMAB.learners.Contextual_Wrapper import D_UCB1_Learner
-from .brushMAB.BrushMod import BrushRegressorMod
+import sys
+
+# from algorithms/brush
+# sys.path.append('./')
+# sys.path.append('./brushMAB/')
+
+# from experiments/methods
+sys.path.append('../algorithms/brush/')
+sys.path.append('../algorithms/brush/brushMAB')
+
+from brushMAB.learners.Contextual_Wrapper import D_UCB1_Learner
+from brushMAB.BrushMod import BrushRegressorMod
 
 kwargs = {
     # Specific to brush with MABs
@@ -9,7 +19,7 @@ kwargs = {
 
     'verbosity'       : False,
     'pop_size'        : 1_000, 
-    'max_gen'         : 100,
+    'max_gen'         : 250,
     'max_depth'       : 6,  # 8
     'max_size'        : 64, # 75
     'initialization'  : 'uniform',

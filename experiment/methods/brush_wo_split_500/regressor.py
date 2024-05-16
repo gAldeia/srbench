@@ -1,25 +1,9 @@
-import sys
-
-# from algorithms/brush
-# sys.path.append('./')
-# sys.path.append('./brushMAB/')
-
-# from experiments/methods
-sys.path.append('../algorithms/brush/')
-sys.path.append('../algorithms/brush/brushMAB')
-
-from brushMAB.learners.Contextual_Wrapper import C_D_UCB1_Learner
-from brushMAB.BrushMod import BrushRegressorMod
+from brush import BrushRegressor
 
 kwargs = {
-    # Specific to brush with MABs
-    'Learner'                  : C_D_UCB1_Learner,
-    'mab_batch_size'           : 1,
-    'handle_variation_failure' : True,
-
     'verbosity'       : False,
     'pop_size'        : 1_000, 
-    'max_gen'         : 250,
+    'max_gen'         : 500,
     'max_depth'       : 6,  # 8
     'max_size'        : 64, # 75
     'initialization'  : 'uniform',
@@ -34,44 +18,42 @@ kwargs = {
     'objectives'      : ['error', 'size'],
     'functions'       : [
         # Black box experiments ------------------------------------------------
-        # arithmetic
-        # "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
-        # "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
-        # "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
+        # # arithmetic
+        "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
+        "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
+        "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
 
-        # # logic
-        # "And", "Or", "Not", "Xor",
 
-        # # decision
-        # "Equals", "LessThan", "GreaterThan", "Leq", "Geq",
+        # reductions (sum and prod take up to 4 arguments)
+        # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
 
-        # # reductions
-        # # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
+        # transformation
+        "Softmax",
 
-        # # transformation
-        # "Softmax",
-
-        # # timing masks
-        # "Before", "After", "During",
+        # timing masks
+        "Before", "After", "During",
         
-        # # split
-        # "SplitBest", "SplitOn",
+        # split stuff
+        # "SplitBest", "SplitOn", "MeanLabel",
+        # "And", "Or", "Not", "Xor", # logic
+        # "Equals", "LessThan", "GreaterThan", "Leq", "Geq", # decision
 
-        # # terminals
-        # "MeanLabel", "Constant", "Terminal",
+        # terminals
+        "Constant", "Terminal"
         
         # synthetic data experiments -------------------------------------------
-        "Add", "Sub", "Mul", "Div", 
-        "Cos", "Sin", "Tanh",
-        "Exp", "Log", "Sqrt", "Pow",
-        "Constant", "Terminal",
-
+        # "Add", "Sub", "Mul", "Div", 
+        # "Cos", "Sin", "Tanh",
+        # "Exp", "Log", "Sqrt", "Pow",
+        # "Constant", "Terminal",
     ]
 }
 
-est = BrushRegressorMod(
+
+est = BrushRegressor(
     **kwargs
 ) 
+
 
 
 func_dict = {

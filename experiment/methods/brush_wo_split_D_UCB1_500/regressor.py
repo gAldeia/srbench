@@ -8,22 +8,22 @@ import sys
 sys.path.append('../algorithms/brush/')
 sys.path.append('../algorithms/brush/brushMAB')
 
-from brushMAB.learners.Contextual_Wrapper import C_D_UCB1_Learner
+from brushMAB.learners.Contextual_Wrapper import D_UCB1_Learner
 from brushMAB.BrushMod import BrushRegressorMod
 
 kwargs = {
     # Specific to brush with MABs
-    'Learner'                  : C_D_UCB1_Learner,
+    'Learner'                  : D_UCB1_Learner,
     'mab_batch_size'           : 1,
     'handle_variation_failure' : True,
 
     'verbosity'       : False,
     'pop_size'        : 1_000, 
-    'max_gen'         : 250,
+    'max_gen'         : 500,
     'max_depth'       : 6,  # 8
     'max_size'        : 64, # 75
     'initialization'  : 'uniform',
-    'validation_size' : 0.33,
+    'validation_size' : 0.33, # 0.0 to turn it off
     'cx_prob'         : 1/7,
     'weights_init'    : False,
     'mutation_options': {"point":1/6, "insert": 1/6, "delete":  1/6, "subtree": 1/6,
@@ -35,37 +35,36 @@ kwargs = {
     'functions'       : [
         # Black box experiments ------------------------------------------------
         # arithmetic
-        # "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
-        # "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
-        # "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
+        "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
+        "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
+        "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
 
-        # # logic
+        # logic
         # "And", "Or", "Not", "Xor",
 
-        # # decision
+        # decision
         # "Equals", "LessThan", "GreaterThan", "Leq", "Geq",
 
-        # # reductions
-        # # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
+        # reductions
+        # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
 
-        # # transformation
-        # "Softmax",
+        # transformation
+        "Softmax",
 
-        # # timing masks
-        # "Before", "After", "During",
+        # timing masks
+        "Before", "After", "During",
         
-        # # split
-        # "SplitBest", "SplitOn",
+        # split
+        # "SplitBest", "SplitOn", "MeanLabel", 
 
-        # # terminals
-        # "MeanLabel", "Constant", "Terminal",
-        
-        # synthetic data experiments -------------------------------------------
-        "Add", "Sub", "Mul", "Div", 
-        "Cos", "Sin", "Tanh",
-        "Exp", "Log", "Sqrt", "Pow",
+        # terminals
         "Constant", "Terminal",
 
+        # synthetic data experiments -------------------------------------------
+        # "Add", "Sub", "Mul", "Div", 
+        # "Cos", "Sin", "Tanh",
+        # "Exp", "Log", "Sqrt", "Pow",
+        # "Constant", "Terminal",
     ]
 }
 
