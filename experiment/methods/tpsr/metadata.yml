@@ -1,0 +1,16 @@
+authors:
+  - Parshin Shojaee
+  - Kazem Meidani
+  - Amir Barati Farimani
+  - Chandan K. Reddy
+email: parshinshojaee@vt.edu
+name: tpsr
+description: | 
+  Transformer-based Planning for Symbolic Regression
+  Parshin Shojaee, Kazem Meidani, Amir Barati Farimani, Chandan K. Reddy
+
+  Paper: https://proceedings.neurips.cc/paper_files/paper/2023/file/8ffb4e3118280a66b192b6f06e0e2596-Paper-Conference.pdf
+  Download pre-trained model: not available
+
+url: https://github.com/deep-symbolic-mathematics/TPSR
+

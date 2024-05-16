@@ -150,21 +150,18 @@ if __name__ == '__main__':
             for ml in learners:
                 save_file = (results_path + '/' + dataname + '_' + ml + '_' 
                              + str(random_state))
+                if args.Y_NOISE > 0:
+                    save_file += '_target-noise'+str(args.Y_NOISE)
+                if args.X_NOISE > 0:
+                    save_file += '_feature-noise'+str(args.X_NOISE)
+
                 # if updated, check if json file exists (required)
-                if ('updated' in suffix 
-                    or args.SCRIPT.startswith('fix_')):
+                if ('updated' in suffix or args.SCRIPT.startswith('fix_')):
                     if not os.path.exists(save_file+'.json'):
                         jobs_wout_results.append([save_file,'json result DNE'])
                         continue
 
                 if not args.NOSKIPS:
-                    save_file = (results_path + '/' + dataname + '_' + ml + '_' 
-                                 + str(random_state))
-                    if args.Y_NOISE > 0:
-                        save_file += '_target-noise'+str(args.Y_NOISE)
-                    if args.X_NOISE > 0:
-                        save_file += '_feature-noise'+str(args.X_NOISE)
-
                     # check if there is already a result for this experiment
                     if (os.path.exists(save_file+suffix) 
                         and args.SCRIPT != 'fix_aifeynman_model_size'):

@@ -16,6 +16,7 @@ import pdb
 import numpy as np
 import json
 import os
+import sympy as sp
 import inspect
 from utils import jsonify
 from symbolic_utils import get_sym_model
@@ -91,6 +92,10 @@ def evaluate_model(
     # setup data
     ##################################################
 
+    if est_name == "e2et" or est_name == 'tpsr' or ('nesymres' in est_name) \
+    or est_name == "dso":
+        use_dataframe = False
+    
     ##################################################
     # setup data
     ##################################################
@@ -98,9 +103,15 @@ def evaluate_model(
         dataset, 
         use_dataframe=use_dataframe
     )
+
+    # if est_name == 'tpsr': # TODO: remove it
+    #     if len(feature_names)>10: # TPSR works with at most 10 features
+    #         raise Exception('WARNING: TPSR does not support more than 10 features. Skipping')
+
     print('feature_names:',feature_names)
     if sym_data:
         true_model = get_sym_model(dataset)
+
     # generate train/test split
     X_train, X_test, y_train, y_test = train_test_split(features, labels,
                                                     train_size=0.75,
@@ -183,6 +194,7 @@ def evaluate_model(
     if not use_dataframe: 
         assert isinstance(X_train_scaled, np.ndarray)
         assert isinstance(X_test_scaled, np.ndarray)
+
     print('X_train:',type(X_train_scaled),X_train_scaled.shape)
     print('y_train:',y_train_scaled.shape)
     print('training',est)
@@ -194,7 +206,9 @@ def evaluate_model(
         
         if "brush" in est_name and True: # saving log
             dataset_name = dataset.split('/')[-1].split('.')[0]
-            _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
+            
+            # this can use a lot of space
+            # _save_brush_evolution(est, est_name, dataset_name, random_state, results_path, 0)
 
             # Printing archive
             for ind_idx, ind in enumerate(est.archive_):
@@ -265,6 +279,31 @@ def evaluate_model(
 
     if "brush" in est_name:
         results['model_size'] = est.best_estimator_.size()
+
+    if "tpsr" in est_name:
+        results['model_size'] = len(est.tree_[0])
+        
+    if "nesymres" in est_name:
+        def get_sympy_expr_size(expr):
+            print(expr)
+            tot_size = 1
+            for arg in expr.args:
+                tot_size += get_sympy_expr_size(arg)
+            return tot_size
+            
+        expr = sp.parse_expr(est.model_eq_[0])
+        results['model_size'] = get_sympy_expr_size(expr)
+
+    if "dso" in est_name:
+        results['model_size'] = len(est.program_.traversal)
+
+    if "e2et" in est_name: 
+        # print("retrieving tree", est.retrieve_tree(with_infos=True))
+
+        model_tree = est.retrieve_tree(with_infos=True)["relabed_predicted_tree"]
+        
+        results['model_size'] = len(model_tree)
+
 
     results['target_noise']  = args.Y_NOISE
     results['feature_noise'] = args.X_NOISE
