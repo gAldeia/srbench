@@ -185,9 +185,9 @@ class TPRS_params():
         self.run_id=1
         self.sample_only=False
         self.save_eval_dic='./eval_result'
-        self.save_model=True
+        self.save_model=False
         self.save_periodic=25
-        self.save_results=True
+        self.save_results=False
         self.seed=23
         self.share_inout_emb=True
         self.simplify=False
@@ -220,7 +220,8 @@ class TPSRRegressor(BaseEstimator, RegressorMixin):
         self.tpsr_params = TPRS_params()
 
         self.random_state = random_state
-
+        self.tpsr_params.seed = self.random_state
+        
     def fit(self, X, y):
         
         np.random.seed(self.tpsr_params.seed)

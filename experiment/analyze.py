@@ -54,7 +54,7 @@ if __name__ == '__main__':
     parser.add_argument('-script',action='store',dest='SCRIPT',
                         default='evaluate_model',
                         type=str,help='Python script to run')
-    parser.add_argument('-m',action='store',dest='M',default=16384,type=int,
+    parser.add_argument('-m',action='store',dest='M',default=8192,type=int,
             help='LSF memory request and limit (MB)')
     parser.add_argument('-max_samples',action='store',  type=int, default=0,
                         help='number of training samples')

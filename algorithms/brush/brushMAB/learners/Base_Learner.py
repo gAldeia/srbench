@@ -76,6 +76,10 @@ class Base_Learner:
 
         reward = num_improvements/len(self.weights)
         
+        # Dominates
+        # return 1.0 if reward==1.0 else 0.0
+    
+        # non-dominance
         return 1.0 if reward>0 else 0.0
     
 

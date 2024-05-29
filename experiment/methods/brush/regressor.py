@@ -18,7 +18,7 @@ kwargs = {
     'objectives'      : ['error', 'size'],
     'functions'       : [
         # Black box experiments ------------------------------------------------
-        # # arithmetic
+        # # # arithmetic
         # "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
         # "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
         # "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
@@ -49,7 +49,6 @@ kwargs = {
         "Cos", "Sin", "Tanh",
         "Exp", "Log", "Sqrt", "Pow",
         "Constant", "Terminal",
-
     ]
 }
 

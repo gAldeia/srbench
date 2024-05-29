@@ -300,7 +300,7 @@ def evaluate_model(
     if "e2et" in est_name: 
         # print("retrieving tree", est.retrieve_tree(with_infos=True))
 
-        model_tree = est.retrieve_tree(with_infos=True)["relabed_predicted_tree"]
+        model_tree = est.dstr.retrieve_tree(with_infos=True)["relabed_predicted_tree"]
         
         results['model_size'] = len(model_tree)
 

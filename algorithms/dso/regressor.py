@@ -11,8 +11,6 @@ sys.path.append('./')
 # from experiments/methods
 # sys.path.append('../algorithms/dso/deep-symbolic-optimization-3.0.0/dso')
 
-# using their sklearn wrapper (does not support GP steps)
-# est = DeepSymbolicRegressor()
 
 
 class uDSRRegressor(BaseEstimator, RegressorMixin):
@@ -44,6 +42,8 @@ class uDSRRegressor(BaseEstimator, RegressorMixin):
 
 est = uDSRRegressor()
 
+# using their sklearn wrapper (does not support GP steps)
+est = DeepSymbolicRegressor()
 
 # Should work for both methods
 def model(est, X=None):

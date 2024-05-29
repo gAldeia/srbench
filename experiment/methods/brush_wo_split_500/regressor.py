@@ -18,34 +18,34 @@ kwargs = {
     'objectives'      : ['error', 'size'],
     'functions'       : [
         # Black box experiments ------------------------------------------------
-        # # arithmetic
-        "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
-        "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
-        "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
+        # # # arithmetic
+        # "Add", "Sub", "Mul", "Div", "Aq", "Abs", "Acos", "Asin", "Atan", "Cos",
+        # "Cosh", "Sin", "Sinh", "Tan", "Tanh", "Ceil", "Floor", "Exp", "Log",
+        # "Logabs", "Log1p", "Sqrt", "Sqrtabs", "Square", "Pow", "Logistic",
 
 
-        # reductions (sum and prod take up to 4 arguments)
-        # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
+        # # reductions (sum and prod take up to 4 arguments)
+        # # "Min", "Max", "Mean", "Median", "Count", "Sum", "Prod", "ArgMax",
 
-        # transformation
-        "Softmax",
+        # # transformation
+        # "Softmax",
 
-        # timing masks
-        "Before", "After", "During",
+        # # timing masks
+        # "Before", "After", "During",
         
-        # split stuff
-        # "SplitBest", "SplitOn", "MeanLabel",
-        # "And", "Or", "Not", "Xor", # logic
-        # "Equals", "LessThan", "GreaterThan", "Leq", "Geq", # decision
+        # # split stuff
+        # # "SplitBest", "SplitOn", "MeanLabel",
+        # # "And", "Or", "Not", "Xor", # logic
+        # # "Equals", "LessThan", "GreaterThan", "Leq", "Geq", # decision
 
-        # terminals
-        "Constant", "Terminal"
+        # # terminals
+        # "Constant", "Terminal"
         
         # synthetic data experiments -------------------------------------------
-        # "Add", "Sub", "Mul", "Div", 
-        # "Cos", "Sin", "Tanh",
-        # "Exp", "Log", "Sqrt", "Pow",
-        # "Constant", "Terminal",
+        "Add", "Sub", "Mul", "Div", 
+        "Cos", "Sin", "Tanh",
+        "Exp", "Log", "Sqrt", "Pow",
+        "Constant", "Terminal",
     ]
 }
 

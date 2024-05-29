@@ -4,7 +4,7 @@ channels:
 dependencies:
   - python
   - scikit-learn 
-  - pandas 
+  - pandas ==1.5.1
   - numpy
   - jupyter
   - pytest
