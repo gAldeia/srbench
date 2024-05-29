@@ -118,3 +118,4 @@ ENV/
 
 # mypy
 .mypy_cache/
+experiment/methods/e2et/model1.pt
