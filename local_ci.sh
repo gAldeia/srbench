@@ -164,6 +164,8 @@ done
 # find ../results_blackbox/ -name "*.out" -type f -delete
 # find ../results_blackbox/ -name "*_evolution.csv" -type f -delete
 
+# find ../results_blackbox/ -name "*_dso_*.*" -type f -exec sh -c 'mv "$0" "${0%.bak}.bak"' {} \;
+
 # find ../results_sym_data/ -name "*.err" -type f -delete
 # find ../results_sym_data/ -name "*.out" -type f -delete
 # find ../results_sym_data/ -name "*_evolution.csv" -type f -delete
