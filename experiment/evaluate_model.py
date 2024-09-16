@@ -204,7 +204,7 @@ def evaluate_model(
     try:
         est.fit(X_train_scaled, y_train_scaled)
         
-        if "brush" in est_name and True: # saving log
+        if "brush" in est_name and "cpp" not in est_name: # saving log
             dataset_name = dataset.split('/')[-1].split('.')[0]
             
             # this can use a lot of space
@@ -278,7 +278,10 @@ def evaluate_model(
         results['model_size'] = get_complexity(est)
 
     if "brush" in est_name:
-        results['model_size'] = est.best_estimator_.size()
+        if "cpp" in est_name:
+            results['model_size'] = est.best_estimator_.fitness.size
+        else: # older versions of brush 
+            results['model_size'] = est.best_estimator_.size()
 
     if "tpsr" in est_name:
         results['model_size'] = len(est.tree_[0])

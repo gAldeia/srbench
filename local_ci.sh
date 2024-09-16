@@ -89,11 +89,16 @@ python -m pytest -v test_algorithm.py --ml $SUBNAME
 
 # # conda activate srbench-feat (or other environment)
 python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
-                                             -ml "brush_500,brush_wo_split_500,brush_D_UCB1_500,brush_wo_split_D_UCB1_500parapa" \
+                                             -ml "brush_500,brush_wo_split_500,brush_D_UCB1_500,brush_wo_split_D_UCB1_500" \
                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
 python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 48:00 \
                                              -ml "brush,brush_C_D_TS,brush_C_D_UCB1,brush_D_TS,brush_D_UCB1,brush_wo_split,brush_wo_split_D_UCB1" \
+                                             -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
+
+# # conda activate srbench-brush-cpp
+python analyze.py ../datasets/pmlb/datasets/ -n_trials 10 -results ../results_blackbox -time_limit 24:00 \
+                                             -ml "brush-cpp,brush-cpp-dynamic,brush-cpp-thompson" \
                                              -max_samples 10000 -q 'bch-compute' --scale_x --scale_y --slurm
 
 # # conda activate srbench-feat (or other environment)
@@ -176,6 +181,7 @@ done
 # # find ../results_sym_data/ -name "*_dso_*.*" -type f -delete
 # # find ../results_sym_data/ -name "*_nesymres_*.*" -type f -delete
 # find ../results_blackbox/ -name "*_brush_500_*.*" -type f -delete
+# find ../results_blackbox/ -name "*_brush-cpp_*.*" -type f -delete
 # find ../results_blackbox/ -name "*_brush_D_UCB1_500_*.*" -type f -delete
 # find ../results_blackbox/ -name "*_brush_wo_split_500_*.*" -type f -delete
 # find ../results_blackbox/ -name "*_brush_wo_split_D_UCB1_500_*.*" -type f -delete

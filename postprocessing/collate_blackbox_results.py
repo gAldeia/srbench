@@ -87,16 +87,17 @@ for f in tqdm(glob(rdir + '/*/*.json')):
 
     if 'cv_results' in f: 
         continue
+
     # leave out symbolic data
     if 'feynman_' in f or 'strogatz_' in f:
         continue
 
     # Filtering brushes
-    if not any([c in f for c in ['brush_500','brush_D_UCB1_500','brush_wo_split_500','brush_wo_split_D_UCB1_500',]]):
-        continue
-
-    # if "_e2et_" not in f:
+    # if not any([c in f for c in ['brush_500','brush_D_UCB1_500','brush_wo_split_500','brush_wo_split_D_UCB1_500',]]):
     #     continue
+
+    if "_brush-cpp" not in f:
+        continue
 
     # leave out LinearReg, Lasso (we have SGD with penalty)
     if any([m in f for m in ['LinearRegression','Lasso','EHCRegressor']]):
@@ -121,6 +122,7 @@ for f in tqdm(glob(rdir + '/*/*.json')):
 print(len(fails),'fails:',fails)
 # df_results = pd.concat(frames)
 df_results = pd.DataFrame.from_records(frames)
+print(df_results.shape)
 df_results['params_str'] = df_results['params'].apply(str)
 df_results = df_results.drop(columns=['params'])
 
@@ -144,6 +146,9 @@ df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('FE_
 
 # rename GPGOMEA to GP-GOMEA
 df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('GPGOMEA','GP-GOMEA'))
+
+# df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('brush-cpp', 'Brush'))
+# df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('brush-cpp', 'Brush'))
 
 df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('brush_500', 'Brush'))
 df_results['algorithm'] = df_results['algorithm'].apply(lambda x: x.replace('brush_D_UCB1_500', 'Brush (D-UCB1)'))
@@ -184,8 +189,8 @@ for col in ['algorithm','dataset']:
 ##########
 # save results
 ##########
-df_results.to_feather('../results/black-box_results_local.feather')
-print('results saved to ../results/black-box_results_local.feather')
+df_results.to_feather('../results/black-box_results_brush-cpp.feather')
+print('results saved to ../results/black-box_results_brush-cpp.feather')
 
 ########
 print('mean trial count:')
